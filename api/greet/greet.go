@@ -1,0 +1,11 @@
+package greet
+
+import "os"
+
+
+func Hello() {
+	   os.Setenv("mongoURIEnv",
+    "mongodb+srv://machinelearner646:S2WJjm80GcgaqMiV@cluster0.aiigs.mongodb.net/goapp?retryWrites=true&w=majority&appName=Cluster0")
+    os.Setenv("jwtSecretEnv",
+    "28f907b32a4717f4c543e9515d67527bab09b762d43bac93db742241aae4c50d48cfc78a6bf4155b8403006fec5f864236ad1a4ea94a57798ccd4db031829fa14ff45d53a62fcbe237ba38326b619b27ef67d50ba66889c4647dd0ca8204414353ae696bb671b18cb9df45a72921df2cedee15d9da36501a634a1ce96869c03768bd8144783cbdb6656ea03295949e226c8c7388f73ab31dbe0f8fdde18d30dfe4463d32dc352a310fc504a36eb1add24daa5e50d4e47413f691649631b8a2b7cf1110d36748bc95136dd4e9a34a7a14464e096b389e47d857bb3fbaaf5036684d41992503f6e2f0e7827be55c47f47e23b4d58c25bce2bfc16c6baae39992ca")
+}

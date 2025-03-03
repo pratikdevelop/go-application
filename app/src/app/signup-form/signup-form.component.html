@@ -1,0 +1,199 @@
+<div class="w-full h-full flex items-center justify-center">
+ <div
+    class="flex flex-col gap-6 w-4/12 bg-gray-100 p-8 rounded-lg shadow-md"
+  >
+    <span class="text-2xl font-semibold">Signup with your account</span>
+
+    <mat-horizontal-stepper [linear]="isLinear" #stepper>
+      <mat-step
+        [stepControl]="formNameGroup"
+        label="Personal Details"
+        class="space-y-6"
+      >
+        <ng-template matStepLabel>Personal Details</ng-template>
+        <form [formGroup]="formNameGroup" class="flex flex-col space-y-6">
+          <mat-form-field class="w-full">
+            <mat-label>Enter your name</mat-label>
+            <input matInput formControlName="name" name="name" required />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Enter your email</mat-label>
+            <input
+              matInput
+              formControlName="email"
+              type="email"
+              name="email"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Enter your username</mat-label>
+            <input
+              matInput
+              formControlName="username"
+              name="username"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Enter your phone number</mat-label>
+            <input matInput formControlName="phone" name="phone" required />
+          </mat-form-field>
+          <mat-form-field class="w-full mb-5">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender" name="gender" required>
+              <mat-option value="Male">Male</mat-option>
+              <mat-option value="Female">Female</mat-option>
+              <mat-option value="Other">Other</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Select your date of birth</mat-label>
+            <input
+            matInput
+              [matDatepicker]="datepicker"
+              formControlName="date_of_birth"
+            />
+            <mat-datepicker #datepicker ></mat-datepicker>
+            <mat-datepicker-toggle
+              [for]="datepicker"
+              matSuffix
+            ></mat-datepicker-toggle>
+          </mat-form-field>
+        </form>
+        <div>
+          <button
+            (click)="mobeToNextStep()"
+            class="w-full mb-5"
+            mat-flat-button
+            matStepperNext
+          >
+            Next
+          </button>
+        </div>
+      </mat-step>
+
+      <mat-step [stepControl]="formAddressGroup" label="Password">
+        <form [formGroup]="formAddressGroup" class="flex flex-col space-y-6">
+          <ng-template matStepLabel>Address details</ng-template>
+          <mat-form-field class="w-full">
+            <mat-label>Enter your address</mat-label>
+            <input matInput formControlName="address" name="address" required />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Enter your city</mat-label>
+            <input matInput formControlName="city" name="city" required />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Enter your state</mat-label>
+            <input matInput formControlName="state" name="state" required />
+          </mat-form-field>
+
+          <mat-form-field class="w-full">
+            <mat-label>Enter your country</mat-label>
+            <input matInput formControlName="country" name="country" required />
+          </mat-form-field>
+          <mat-form-field class="w-full">
+            <mat-label>Enter your zip code</mat-label>
+            <input matInput formControlName="pincode" name="pincode" required />
+          </mat-form-field>
+        </form>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+
+      <mat-step [stepControl]="formPasswordGroup" label="Password">
+        <form [formGroup]="formPasswordGroup" class="flex flex-col space-y-6">
+          <ng-template matStepLabel>Password</ng-template>
+          <mat-form-field class="w-full mb-5">
+            <mat-label>Enter your password</mat-label>
+            <input
+              matInput
+              formControlName="password"
+              type="password"
+              name="password"
+              required
+            />
+          </mat-form-field>
+          <mat-form-field class="w-full mb-5">
+            <mat-label>Confirm your password</mat-label>
+            <input
+              matInput
+              formControlName="confirm_password"
+              type="password"
+              name="confirm_password"
+              required
+            />
+          </mat-form-field>
+        </form>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+
+      <mat-step [stepControl]="formFileGroup" label="Profile Picture">
+        <ng-template matStepLabel>Profile Picture</ng-template>
+        <form [formGroup]="formFileGroup" class="flex flex-col space-y-6">
+          <div class="flex flex-col items-center gap-4">
+            <label for="file_input" class="relative inline-block">
+              <span class="sr-only">Upload Image</span>
+              <input
+                id="file_input"
+                type="file"
+                (change)="onFileChange($event)"
+                accept="image/*"
+                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+              />
+              <span
+                class="absolute inset-0 flex items-center justify-center bg-blue-500 text-white rounded-lg cursor-pointer"
+              >
+                Upload Image
+              </span>
+            </label>
+            <div *ngIf="selectedFile" class="text-center">
+              <img
+                [src]="previewUrl"
+                alt="Selected Image"
+                class="mx-auto mt-4 w-32 h-32 object-cover rounded-lg"
+              />
+              <p class="mt-2 text-sm text-gray-700">
+                {{ selectedFile.name }}
+              </p>
+            </div>
+          </div>
+        </form>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </mat-step>
+
+      <mat-step label="Review">
+        <ng-template matStepLabel>Review</ng-template>
+        <div>
+          <p><strong>Name:</strong> {{ form.value.name }}</p>
+          <p><strong>Email:</strong> {{ form.value.email }}</p>
+          <p><strong>Username:</strong> {{ form.value.username }}</p>
+          <p><strong>Phone:</strong> {{ form.value.phone }}</p>
+          <p><strong>Date of Birth:</strong> {{ form.value.date_of_birth }}</p>
+          <p><strong>Gender:</strong> {{ form.value.gender }}</p>
+          <p><strong>Profile Picture:</strong></p>
+          <img
+            [src]="previewUrl"
+            alt="Selected Image"
+            class="w-32 h-32 object-cover rounded-lg"
+          />
+        </div>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-raised-button color="primary" type="button"  (click)="onSubmit()">
+            Submit
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>
