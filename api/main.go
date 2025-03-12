@@ -213,6 +213,129 @@ func authMiddleware(roles ...string) gin.HandlerFunc {
     }
 }
 
+// // AI-powered recommendation endpoint
+// func handleUserRecommendations(c *gin.Context) {
+//     email, _ := c.Get("email")
+
+//     ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+//     defer cancel()
+
+//     var user User
+//     if err := collection.FindOne(ctx, bson.M{"email": email}).Decode(&user); err != nil {
+//         c.JSON(http.StatusNotFound, ErrorResponse{"User not found"})
+//         return
+//     }
+
+//     // Simulate AI recommendation (replace with real AI logic)
+//     recommendations := map[string]interface{}{
+//         "suggested_content": "AI-based content for " + user.City,
+//         "product":           "Personalized item based on " + user.Gender,
+//     }
+
+//     c.JSON(http.StatusOK, SuccessResponse{
+//         Message: "Recommendations generated",
+//         Data:    recommendations,
+//     })
+// }
+
+// AI-powered anomaly detection
+func handleAnomalyDetection(c *gin.Context) {
+    email, _ := c.Get("email")
+
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
+
+    var user User
+    if err := collection.FindOne(ctx, bson.M{"email": email}).Decode(&user); err != nil {
+        c.JSON(http.StatusNotFound, ErrorResponse{"User not found"})
+        return
+    }
+
+    // Simulate AI anomaly check (replace with real ML model)
+    anomalyScore := calculateAnomalyScore(user) // Custom function
+    if anomalyScore > 0.8 {
+        c.JSON(http.StatusOK, SuccessResponse{
+            Message: "Potential anomaly detected",
+            Data:    gin.H{"score": anomalyScore},
+        })
+        return
+    }
+
+    c.JSON(http.StatusOK, SuccessResponse{
+        Message: "No anomalies detected",
+        Data:    gin.H{"score": anomalyScore},
+    })
+}
+
+// Placeholder for anomaly score calculation
+func calculateAnomalyScore(user User) float64 {
+    // Replace with real ML model logic
+    return 0.3 // Dummy value
+}// Recommendation struct to standardize response
+type Recommendation struct {
+    Content string `json:"content"`
+    Product string `json:"product"`
+}
+
+// generateRecommendations simulates an AI model for now
+func generateRecommendations(user User) Recommendation {
+    rec := Recommendation{}
+
+    // Rule-based logic (replace with ML model later)
+    switch user.City {
+    case "New York":
+        rec.Content = "Latest Broadway shows"
+        rec.Product = "City tour package"
+    case "San Francisco":
+        rec.Content = "Tech documentaries"
+        rec.Product = "Gadgets"
+    default:
+        rec.Content = "General news"
+        rec.Product = "Gift card"
+    }
+
+    // Adjust based on gender
+    if user.Gender == "male" {
+        rec.Product = "Tech gadgets"
+    } else if user.Gender == "female" {
+        rec.Product = "Fashion accessories"
+    }
+
+    // Incorporate preferences if available
+    if category, ok := user.Preferences["favorite_category"]; ok {
+        rec.Product = category + " item"
+    }
+
+    return rec
+}
+
+// handleUserRecommendations provides AI-driven suggestions
+func handleUserRecommendations(c *gin.Context) {
+    email, exists := c.Get("email")
+    if !exists {
+        c.JSON(http.StatusUnauthorized, ErrorResponse{"User not authenticated"})
+        return
+    }
+
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
+
+    var user User
+    if err := collection.FindOne(ctx, bson.M{"email": email}).Decode(&user); err != nil {
+        c.JSON(http.StatusNotFound, ErrorResponse{"User not found"})
+        return
+    }
+
+    // Generate AI recommendations
+    recommendations := generateRecommendations(user)
+
+    c.JSON(http.StatusOK, SuccessResponse{
+        Message: "Recommendations generated successfully",
+        Data:    recommendations,
+    })
+}    protected.GET("/recommendations", handleUserRecommendations)
+    protected.GET("/anomaly", handleAnomalyDetection)
+
 // Setup Database
 func setupDatabase() (*mongo.Client, error) {
     mongoURI := getEnvOrDefault(mongoURIEnv, "mongodb+srv://machinelearner646:S2WJjm80GcgaqMiV@cluster0.aiigs.mongodb.net/goapp?retryWrites=true&w=majority")
